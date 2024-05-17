@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #161416;
+  color: white;
+}
+
+.modal_active{
+  opacity: 100;
+  z-index: 20;
+}
+.modal_card_active{
+  transform: translateY(1rem) scale(1);
+}
