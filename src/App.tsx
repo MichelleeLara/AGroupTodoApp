@@ -9,28 +9,28 @@ interface Item {
   text: string
 }
 
-const INITIAL_TODO: Item [] = [
-  {
-    id: crypto.randomUUID(),
-    timestamp: Date.now(),
-    text: '10 PullUps'
-  },
-  {
-    id: crypto.randomUUID(),
-    timestamp: Date.now(),
-    text: '10min corriendo'
-  },
-  {
-    id: crypto.randomUUID(),
-    timestamp: Date.now(),
-    text: 'Rutina Tabata'
-  },
-  {
-    id: crypto.randomUUID(),
-    timestamp: Date.now(),
-    text: 'Burpees'
-  },
-]
+// const INITIAL_TODO: Item [] = [
+//   {
+//     id: crypto.randomUUID(),
+//     timestamp: Date.now(),
+//     text: '10 PullUps'
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     timestamp: Date.now(),
+//     text: '10min corriendo'
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     timestamp: Date.now(),
+//     text: 'Rutina Tabata'
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     timestamp: Date.now(),
+//     text: 'Burpees'
+//   },
+// ]
 
 
 
@@ -40,11 +40,11 @@ function App() {
   const [ currentDataInput , setCurrentDataInput ] = useState({id:'', text:''}) 
   const [completeExercise, setCompleteExercise] = useState<Item[]>(() => {
     const storedItems = localStorage.getItem('completeEx');
-    return storedItems ? JSON.parse(storedItems) : INITIAL_TODO;
+    return storedItems ? JSON.parse(storedItems) : [];
   });
   const [items, setItems] = useState<Item[]>(() => {
     const storedItems = localStorage.getItem('items');
-    return storedItems ? JSON.parse(storedItems) : INITIAL_TODO;
+    return storedItems ? JSON.parse(storedItems) : [];
   });
 
   // Elements DOM
@@ -147,7 +147,7 @@ function App() {
     completeEx.push(item)
     localStorage.setItem("completeEx", JSON.stringify(completeEx))
   } 
-  
+
 
   useEffect(() => {
     updateItems();
@@ -155,19 +155,6 @@ function App() {
   return (
     <>
       <main className='pb20 relative'>
-        <section id='modal' className='absolute w-full h-full backdrop-blur-sm flex items-start justify-center opacity-0 -z-10 transition-all duration-1000'>
-          <div id='modal_card' className="border-[1px] bg-white text-black w-fit py-5 px-9 rounded-lg flex items-center transition-all duration-300 justify-between gap-10 -translate-y-32 scale-50">
-            <svg className='animate-bounce' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
-              <path d="M2.52992 14.394C2.31727 15.7471 3.268 16.6862 4.43205 17.1542C8.89481 18.9486 15.1052 18.9486 19.5679 17.1542C20.732 16.6862 21.6827 15.7471 21.4701 14.394C21.3394 13.5625 20.6932 12.8701 20.2144 12.194C19.5873 11.2975 19.525 10.3197 19.5249 9.27941C19.5249 5.2591 16.1559 2 12 2C7.84413 2 4.47513 5.2591 4.47513 9.27941C4.47503 10.3197 4.41272 11.2975 3.78561 12.194C3.30684 12.8701 2.66061 13.5625 2.52992 14.394Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M9 21C9.79613 21.6219 10.8475 22 12 22C13.1525 22 14.2039 21.6219 15 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <aside className="flex flex-col gap-1.5">
-              <h3 className='text-sm font-bold'>No se han guardado los cambios ¿Quieres guardarlos?</h3>
-              <p className='text-sm max-w-[350px]'><strong className='lowercase text-xs'>importante :</strong> Oprimir "enter" al modificar un ejercicio para que se guarde correctamente.</p>
-            </aside>
-            <button onClick={() => {handleSaveFromModal()}}>Guardar</button>
-          </div>
-        </section>
         <Bar/>
         <Controls updateItems={updateItems} items={items} />
         <section className='flex flex-col items-center justify-center mt-10'>
@@ -188,30 +175,36 @@ function App() {
             <article className="mt-5">
               <ul>
                 {
-                  items.map((item) =>{
-                    return (
-        
-                        <li key={item.id}  className="text-sm flex items-center justify-between py-2 hover:bg-[#2f2f2f] hover:rounded-lg cursor-pointer">
-                          <div className="flex gap-4 items-center">
-                            <button onClick={()=>{handleCompleteExercise(item)}} className="h-4 w-4 border-2 rounded-full"></button>
-                            <input 
-                            type="text" 
-                            value={item.text || ''}  
-                            onChange={e => handleItemChange(item.id, e.target.value)}
-                            onBlur={() =>{handleOnBlur()}} 
-                            onKeyDown={e => handleKeyDown(item, e)}
-                            onFocus={() =>{setIsSave(false)}}
-                            className='bg-transparent outline-none'/>
-                          </div>
-                          <p>Nov, 11</p>
-                          <button onClick={() =>{handleDeleteItem(item.id)}}>
-                            <Delete02Icon/>
-                          </button>
-                        </li>
+                  items.length === 0 ? (
+                    <p className='text-xs'>
+                      <strong>Aún no hay ejercios</strong>
+                    </p>
+                  ): (
+                    items.map((item) =>{
+                      return (
           
-                      
-                    );
-                  })
+                          <li key={item.id}  className="text-sm flex items-center justify-between py-2 hover:bg-[#2f2f2f] hover:rounded-lg cursor-pointer">
+                            <div className="flex gap-4 items-center">
+                              <button onClick={()=>{handleCompleteExercise(item)}} className="h-4 w-4 border-2 rounded-full"></button>
+                              <input 
+                              type="text" 
+                              value={item.text || ''}  
+                              onChange={e => handleItemChange(item.id, e.target.value)}
+                              onBlur={() =>{handleOnBlur()}} 
+                              onKeyDown={e => handleKeyDown(item, e)}
+                              onFocus={() =>{setIsSave(false)}}
+                              className='bg-transparent outline-none'/>
+                            </div>
+                            <p>Nov, 11</p>
+                            <button onClick={() =>{handleDeleteItem(item.id)}}>
+                              <Delete02Icon/>
+                            </button>
+                          </li>
+            
+                        
+                      );
+                    })
+                  )
                 }
               </ul>
             </article>
@@ -232,28 +225,47 @@ function App() {
 
             <article className="mt-5">
               {
-                completeExercise.map((item) =>{
-                  return (
-                    <>
-                      <li key={item.id} role='inputComplete' className="text-sm flex items-center justify-between py-2 hover:bg-[#2f2f2f] hover:rounded-lg cursor-pointer">
-                        <div className="flex gap-4 items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" color="currentColor" fill="none">
-                            <path d="M15 2.4578C14.053 2.16035 13.0452 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 10.9548 21.8396 9.94704 21.5422 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                            <path d="M8.5 9.5L12 13L21.0002 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                          <p style={{textDecoration:'line-through'}}>{item.text}</p>
-                        </div>
-                        <p>Nov, 11</p>
-                        <button className='btnComplete' onClick={() =>{handleDeleteItem(item.id)}}>
-                          <Delete02Icon/>
-                        </button>
-                      </li>
-                    </>
-                    
-                  );
-                })
+                completeExercise.length === 0 ? (
+                  <p className='text-xs'>
+                    <strong>no hay ejercios COMPLETADOS</strong>
+                  </p>
+                ) : (
+                  completeExercise.map((item) =>{
+                    return (
+                      <>
+                        <li key={item.id} role='inputComplete' className="text-sm flex items-center justify-between py-2 hover:bg-[#2f2f2f] hover:rounded-lg cursor-pointer">
+                          <div className="flex gap-4 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" color="currentColor" fill="none">
+                              <path d="M15 2.4578C14.053 2.16035 13.0452 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 10.9548 21.8396 9.94704 21.5422 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                              <path d="M8.5 9.5L12 13L21.0002 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <p style={{textDecoration:'line-through'}}>{item.text}</p>
+                          </div>
+                          <p>Nov, 11</p>
+                          <button className='btnComplete' onClick={() =>{handleDeleteItem(item.id)}}>
+                            <Delete02Icon/>
+                          </button>
+                        </li>
+                      </>
+                      
+                    );
+                  })
+                )
               }
             </article>
+          </div>
+        </section>
+        <section id='modal' className='absolute w-full h-full backdrop-blur-sm flex items-start justify-center opacity-0 -z-10 transition-all duration-1000'>
+          <div id='modal_card' className="border-[1px] bg-white text-black w-fit py-5 px-9 rounded-lg flex items-center transition-all duration-300 justify-between gap-10 -translate-y-32 scale-50">
+            <svg className='animate-bounce' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+              <path d="M2.52992 14.394C2.31727 15.7471 3.268 16.6862 4.43205 17.1542C8.89481 18.9486 15.1052 18.9486 19.5679 17.1542C20.732 16.6862 21.6827 15.7471 21.4701 14.394C21.3394 13.5625 20.6932 12.8701 20.2144 12.194C19.5873 11.2975 19.525 10.3197 19.5249 9.27941C19.5249 5.2591 16.1559 2 12 2C7.84413 2 4.47513 5.2591 4.47513 9.27941C4.47503 10.3197 4.41272 11.2975 3.78561 12.194C3.30684 12.8701 2.66061 13.5625 2.52992 14.394Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M9 21C9.79613 21.6219 10.8475 22 12 22C13.1525 22 14.2039 21.6219 15 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <aside className="flex flex-col gap-1.5">
+              <h3 className='text-sm font-bold'>No se han guardado los cambios ¿Quieres guardarlos?</h3>
+              <p className='text-sm max-w-[350px]'><strong className='lowercase text-xs'>importante :</strong> Oprimir "enter" al modificar un ejercicio para que se guarde correctamente.</p>
+            </aside>
+            <button onClick={() => {handleSaveFromModal()}}>Guardar</button>
           </div>
         </section>
       </main>
