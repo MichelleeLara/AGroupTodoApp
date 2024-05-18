@@ -216,7 +216,7 @@ function App() {
             <header className='flex items-end justify-between pb-1.5 gap-3 text-sm'>
               <div className="flex gap-3 items-end">
                 <p>Completados</p>
-                <p className='text-xs text-gray-400'>{completeExercise.length} ejercicios completados</p>
+                <p className='text-xs text-nowrap text-gray-400'>{completeExercise.length} ejercicios completados</p>
               </div>
               <p className='text-xs text-center mr-16 relative   w-full text-gray-400 ml-[6.5rem]'>fecha</p>
               <p className='text-xs text-gray-400'>deber</p>
