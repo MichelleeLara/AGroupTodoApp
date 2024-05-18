@@ -216,8 +216,9 @@ function App() {
             <header className='flex items-end justify-between pb-1.5 gap-3 text-sm'>
               <div className="flex gap-3 items-end">
                 <p>Completados</p>
-                <p className='text-xs text-gray-400'>3 items</p>
+                <p className='text-xs text-gray-400'>{completeExercise.length} ejercicios completados</p>
               </div>
+              <p className='text-xs text-center mr-16 relative   w-full text-gray-400 ml-[6.5rem]'>fecha</p>
               <p className='text-xs text-gray-400'>deber</p>
             </header>
 
@@ -234,7 +235,7 @@ function App() {
                     return (
                       <>
                         <li key={item.id} role='inputComplete' className="text-sm flex items-center justify-between py-2 hover:bg-[#2f2f2f] hover:rounded-lg cursor-pointer">
-                          <div className="flex gap-4 items-center">
+                          <div className="flex gap-4 items-center min-w-[190px]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" color="currentColor" fill="none">
                               <path d="M15 2.4578C14.053 2.16035 13.0452 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 10.9548 21.8396 9.94704 21.5422 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                               <path d="M8.5 9.5L12 13L21.0002 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
